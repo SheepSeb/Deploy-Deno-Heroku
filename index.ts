@@ -12,7 +12,7 @@ const wasmCode = await Deno.readFile("main.wasm");
   const wasmModule = new WebAssembly.Module(wasmCode);
   const wasmInstance = new WebAssembly.Instance(wasmModule);
   const add = wasmInstance.exports.add as CallableFunction
-  let payload = add(24,7).toString();
+  const payload = add(24,7).toString();
 
 for await (const req of s) {
   req.respond({ body: payload});
