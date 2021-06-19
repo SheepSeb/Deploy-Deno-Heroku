@@ -7,6 +7,13 @@ const argPort = parse(args).port;
 
 const s = serve({ port: argPort ? Number(argPort) : DEFAULT_PORT });
 console.log("It's working");
+
+const wasmCode = await Deno.readFile("main.wasm");
+  const wasmModule = new WebAssembly.Module(wasmCode);
+  const wasmInstance = new WebAssembly.Instance(wasmModule);
+  const add = wasmInstance.exports.add as CallableFunction
+  let payload = add(24,7).toString();
+
 for await (const req of s) {
-  req.respond({ body: "Hello World\n" });
+  req.respond({ body: payload});
 }
